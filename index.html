@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>satasite !</title>
+    <link rel="icon" href="\bomberman-icon.png" type="image/x-icon">
+    <!-- The style.css file allows you to change the look of your web pages.
+         If you include the next line in all your web pages, they will all share the same look.
+         This makes it easier to make new pages for your site. -->
+    <link href="\style.css" rel="stylesheet" type="text/css" media="all">
+  </head>
+  <body>
+	
+	<img id="muteButton" onclick="muteToggle()" src = "\noAudio.gif"></img>
+	<script>
+		let mute = true;
+		let muteButton = document.getElementById("muteButton");
+		
+		//mute/unmute
+		function muteToggle(){ 
+			mute = !mute;
+			
+			//change icon
+			if (mute) muteButton.src = "/noAudio.gif";
+			else muteButton.src = "/audio.gif";
+		
+			//mute/unmute whatevers currently playing
+			if(!staticVideo.hidden) staticVideo.muted = !staticVideo.muted;
+			if(!sataTV.hidden) sataTV.muted = !sataTV.muted;
+		}
+	</script>
+	
+	<div class="category">
+		
+		<img id="satasiteBackground" class="background" src="/satasiteBackground.jpg" alt="satasite background">
+		
+		<picture>
+		  <source srcset="\satasiteMobile.gif" media="(aspect-ratio <= 1/1)">
+		  <source srcset="\satasite.gif">
+		  <img class="satasiteLogo" src="\satasite.gif" alt="satasite !">
+		</picture> 
+		
+		<div class="links">
+			<a href="https://twitter.com/sataIight"> <img src="\twitter.gif" style="float:left;" width="50%" height="100%" alt="twitter"> </a>
+			<a href="https://tumblr.com/satalight"> <img src="\tumblr.gif" style="float:left;" width="50%" height="100%" alt="tumblr"> </a>
+		</div>
+		
+		<img src="\down.gif" class="bottomCenter">
+		
+	</div>
+	
+	
+	<div class="category" id="favorWidthWhenInMobileAspectRatio">
+		
+		<div class="container">
+			<img id="videoArchiveBackground" class="background" src="/pkmnChannelMinusikachu.png" alt="sataTV background"></img>
+			
+			<video  class = "videoLayer" id= "static" src="https://i.imgur.com/56U9NSZ.mp4" autoplay muted loop> </video>
+			<video  class = "videoLayer" id= "sataTV" src="https://i.imgur.com/KJW3r7J.mp4" hidden muted> </video>
+		</div>
+		
+		<img id="pikachu" src= "\pikachu1.gif"></img>
+	
+		<img id="notification" src= "\pikachuIsEnthralled.gif"></img>
+		
+		<script>
+			//satalight TV
+			let staticVideo = document.getElementById("static");
+			let sataTV = document.getElementById("sataTV");
+			
+			let videoQueue;
+			let playedVideos = [];
+			let currentVideo;
+			
+			let pikachu = document.getElementById("pikachu");
+			
+			//getVideoQueue();
+			
+			//pulling video list from imgur api //heavily based on https://medium.com/@microaeris/getting-started-with-the-imgur-api-4e96c352658a
+			function getVideoQueue(){
+				let req = new XMLHttpRequest();
+				req.open("GET", "https://api.imgur.com/3/album/8UAp6qX");
+				req.setRequestHeader("Authorization", "Client-ID f707b5eca189982");
+				req.send("null");
+				req.onreadystatechange = function() { 
+					if (req.readyState == 4 && req.status == 200) {
+						videoQueue = JSON.parse(req.responseText).data.images;
+						
+						//setting up first video to play
+						currentVideo = getRandomInt(videoQueue.length);
+						sataTV.src = "https://i.imgur.com/" + videoQueue[currentVideo].id + ".mp4";
+					} else {
+						console.log("Error with Imgur Request.");
+					}
+				}
+			}
+			
+			//play video once done loading..
+			sataTV.oncanplay = function() {
+				//..and waiting 2 seconds for static to play 
+				setTimeout(function(){
+					staticVideo.muted = true;
+					
+					//changing from static to video
+					changeChannel(sataTV, staticVideo);
+					
+					sataTV.onended = function(){ 
+						//changing from video to static
+						changeChannel(staticVideo,sataTV);
+						changeVideo();
+					}
+				}, 2000);
+			}
+			
+			function changeChannel(newVideo, oldVideo){
+				oldVideo.muted = true;
+				oldVideo.hidden = true;
+				
+				newVideo.play();
+				if (mute) newVideo.muted = true;
+				else newVideo.muted = false;
+				newVideo.hidden = false;
+			}
+			
+			//changing video
+			function changeVideo(){
+				playedVideos.push(videoQueue[currentVideo]); //add played video to played queue
+				videoQueue.splice(currentVideo,1); //delete played video
+				
+				if (videoQueue.length == 0){ //repeat if queue is done
+					videoQueue = playedVideos;
+					playedVideos = [];
+				}
+				
+				currentVideo = getRandomInt(videoQueue.length); //pull new video
+				sataTV.src = "https://i.imgur.com/" + videoQueue[currentVideo].id + ".mp4"; //load new video
+				
+				//pikachu ai
+				let pikachuChoice = getRandomInt(3); 
+				
+				if (pikachuChoice == 0){ //random pikachu pose
+					pikachuChange((getRandomInt(2) + 1).toString());
+				} if (pikachuChoice == 1){ //pikachu turn
+					pikachuChange("3");
+					setTimeout(function(){ pikachuChange((getRandomInt(2) + 1).toString()); }, 2370); //switching back to pose after turn
+				}
+			}
+			
+			//change pikachu pose
+			function pikachuChange(index){
+				pikachu.src = "/pikachu" + index + ".gif";
+			}
+			
+			//roll for notification gif every loop (3.33 seconds)
+			setInterval(function() {
+				document.getElementById("notification").hidden  = true;
+				if (getRandomInt(30) == 0){
+					document.getElementById("notification").hidden = false;
+				}
+			}, 3330);
+			
+			//copied this from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+			function getRandomInt(max) { 
+				return Math.floor(Math.random() * max);
+			}
+		</script>
+	</div>
+	
+  </body>
+</html>

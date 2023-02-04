@@ -1,0 +1,197 @@
+/* CSS is how you can add style to your website, such as colors, fonts, and positioning of your
+   HTML content. To learn how to do something, just try searching Google for questions like
+   "how to change link color." */
+
+html, body {
+    
+}
+
+html {
+    display: table;
+}
+
+body {
+  background-color: black;
+  color: white;
+  font-family: Verdana;
+  
+  display: table-cell;
+  vertical-align: middle;
+  
+  overflow-x: hidden;
+  height:100%;
+}
+
+.category {
+  position:relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: clip;
+}
+
+.container{
+	position: absolute;
+	width:fit-content; 
+	height:fit-content;
+}
+
+.satasiteLogo {
+  position: absolute;
+  height:17vh;
+  top: 40vh;
+  left: 5vw;
+}
+
+.bottomCenter{
+  position: absolute;
+  top: 85vh;
+  left: 44vw;
+  width:15vw;
+  height:auto;
+}
+
+.links {
+	position: absolute;
+	top: 56vh;
+	left:5vw;
+	height:10vh;
+}
+
+#muteButton {
+	position: fixed;
+	height:20vh;
+	top: 0vw;
+	right:0vw;
+	z-index: 2;
+}
+
+#pikachu{
+	position: absolute;
+	right: 0%;
+	bottom: 0%;
+	height: auto;
+	width: 43%;
+	z-index: 2;
+}
+
+#notification{
+	position: absolute;
+	top: 110%;
+	left: 50%;
+	height:10%;
+	z-index: 2;
+	transform: translate(-50%, -50%);
+}
+
+/*Dynamic Classes*/
+
+/*Default*/
+.background{
+  position:relative;
+  width:100vw;
+  height: auto;
+}
+
+#videoArchiveBackground{
+	z-index: 1;
+}
+
+
+.videoLayer {
+	position: absolute;
+	z-index: 0;
+	transform:perspective(200px) rotateY(2.2deg);
+	object-fit: fill;
+	height: calc(47vw * 0.75);
+	width: 47vw;
+	top: calc(20% - 10px);
+	left: 19%;
+}
+
+/*satasiteBackground.naturalHeight = 995px
+satasiteBackground.naturalWidth = 1411px*/
+@media (aspect-ratio <= 1411/995) {
+	#satasiteBackground{
+		height:100vh;
+		width:auto;
+	}
+}
+
+/*videoArchiveBackground.naturalHeight = 1034px
+videoArchiveBackground.naturalWidth = 1920px*/
+@media (aspect-ratio <= 1920/1034) {
+	#videoArchiveBackground{
+		width: auto;
+		height: 100vh;
+	}
+	.videoLayer{
+		height: 64.4165863vh;
+		width: calc(64.4165863vh * 1.3333333333333333333333);
+	}
+}
+
+
+/*Mobile classes*/
+@media (aspect-ratio <= 1/1) {
+  .links{
+	height: 8vh;
+	top: 35vh;
+	left:5vw;
+  }
+  
+  .centered{
+	height: 14%;
+	top: 30%;
+	left: 30%;
+	transform: translate(-50%, -50%);
+  }
+  
+  .satasiteLogo{
+	height: 14vh;
+	top: 20vh;
+  }
+  
+  .bottomCenter{
+	top: 87%;
+	left: 25%;
+	width:auto;
+	height:10vh
+  }
+  
+  #muteButton {
+	height:9%;
+  }
+  
+  #satasiteBackground{
+	right: 45vh;
+  }
+  
+  #notification{
+	height:4%;  
+  }
+  
+  .container{ /*fix later*/
+	left:-25vw;
+  }
+  
+  #videoArchiveBackground{
+	width:180vw;
+	height:auto;
+  }
+  
+  .videoLayer{
+	height: calc(84.6vw * 0.75);
+	width: 84.6vw;
+	left: calc(19% - 10px);
+  }
+  
+  #favorWidthWhenInMobileAspectRatio{
+	height:calc(180vw * 0.538541667);  
+  }
+  
+  #pikachu{
+	height: 55%;
+	width: auto;
+	right:-40%;
+  }
+}
