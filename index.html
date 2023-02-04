@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>satasite !</title>
-    <link rel="icon" href="\bomberman-icon.png" type="image/x-icon">
+    <link rel="icon" href=".\static\bomberman-icon.png" type="image/x-icon">
     <!-- The style.css file allows you to change the look of your web pages.
          If you include the next line in all your web pages, they will all share the same look.
          This makes it easier to make new pages for your site. -->
-    <link href="/style.css" rel="stylesheet" type="text/css" media="all">
+    <link href="./static/style.css" rel="stylesheet" type="text/css" media="all">
   </head>
   <body>
 	
-	<img id="muteButton" onclick="muteToggle()" src = "\noAudio.gif"></img>
+	<img id="muteButton" onclick="muteToggle()" src = ".\static\noAudio.gif"></img>
 	<script>
 		let mute = true;
 		let muteButton = document.getElementById("muteButton");
@@ -22,8 +22,8 @@
 			mute = !mute;
 			
 			//change icon
-			if (mute) muteButton.src = "/noAudio.gif";
-			else muteButton.src = "/audio.gif";
+			if (mute) muteButton.src = "./static/noAudio.gif";
+			else muteButton.src = "./static/audio.gif";
 		
 			//mute/unmute whatevers currently playing
 			if(!staticVideo.hidden) staticVideo.muted = !staticVideo.muted;
@@ -33,20 +33,20 @@
 	
 	<div class="category">
 		
-		<img id="satasiteBackground" class="background" src="/satasiteBackground.jpg" alt="satasite background">
+		<img id="satasiteBackground" class="background" src="./static/satasiteBackground.jpg" alt="satasite background">
 		
 		<picture>
-		  <source srcset="\satasiteMobile.gif" media="(aspect-ratio <= 1/1)">
-		  <source srcset="\satasite.gif">
-		  <img class="satasiteLogo" src="\satasite.gif" alt="satasite !">
+		  <source srcset=".\static\satasiteMobile.gif" media="(aspect-ratio <= 1/1)">
+		  <source srcset=".\static\satasite.gif">
+		  <img class="satasiteLogo" src=".\static\satasite.gif" alt="satasite !">
 		</picture> 
 		
 		<div class="links">
-			<a href="https://twitter.com/sataIight"> <img src="\twitter.gif" style="float:left;" width="50%" height="100%" alt="twitter"> </a>
-			<a href="https://tumblr.com/satalight"> <img src="\tumblr.gif" style="float:left;" width="50%" height="100%" alt="tumblr"> </a>
+			<a href="https://twitter.com/sataIight"> <img src=".\static\twitter.gif" style="float:left;" width="50%" height="100%" alt="twitter"> </a>
+			<a href="https://tumblr.com/satalight"> <img src=".\static\tumblr.gif" style="float:left;" width="50%" height="100%" alt="tumblr"> </a>
 		</div>
 		
-		<img src="\down.gif" class="bottomCenter">
+		<img src=".\static\down.gif" class="bottomCenter">
 		
 	</div>
 	
@@ -60,9 +60,9 @@
 			<video  class = "videoLayer" id= "sataTV" src="https://i.imgur.com/KJW3r7J.mp4" hidden muted> </video>
 		</div>
 		
-		<img id="pikachu" src= "\pikachu1.gif"></img>
+		<img id="pikachu" src= ".\static\pikachu1.gif"></img>
 	
-		<img id="notification" src= "\pikachuIsEnthralled.gif"></img>
+		<img id="notification" src= ".\static\pikachuIsEnthralled.gif"></img>
 		
 		<script>
 			//satalight TV
@@ -149,7 +149,7 @@
 			
 			//change pikachu pose
 			function pikachuChange(index){
-				pikachu.src = "/pikachu" + index + ".gif";
+				pikachu.src = "./static/pikachu" + index + ".gif";
 			}
 			
 			//roll for notification gif every loop (3.33 seconds)
