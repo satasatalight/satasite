@@ -4,80 +4,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>satasite !</title>
-    <link rel="icon" href=".\static\bomberman-icon.png" type="image/x-icon">
+    <link rel="icon" href=".\assets\images\bomberman-icon.png" type="image/x-icon">
     <!-- The style.css file allows you to change the look of your web pages.
          If you include the next line in all your web pages, they will all share the same look.
          This makes it easier to make new pages for your site. -->
-    <link href="./static/style.css" rel="stylesheet" type="text/css" media="all">
-  </head>
-  <body>
+    <link href="./assets/style.css" rel="stylesheet" type="text/css" media="all">
 	
-	<img id="muteButton" onclick="muteToggle()" src = ".\static\noAudio.gif"></img>
+	<img id="muteButton" onclick="muteToggle()" src = ".\assets\images\noAudio.gif"></img>
 	<script>
+		//satatools
 		let mute = true;
 		let muteButton = document.getElementById("muteButton");
+		let focusedAudio;
+		
+		window.onload = function(){
+			focusedAudio = [document.getElementById('sataBgMusic')];
+		}
+		
+		//copied this from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+		function getRandomInt(max) { 
+			return Math.floor(Math.random() * max);
+		}
 		
 		//mute/unmute
 		function muteToggle(){ 
 			mute = !mute;
 			
+			//muting everything focused
+			focusedAudio.forEach(element => element.muted = mute);
+			
 			//change icon
-			if (mute) muteButton.src = "./static/noAudio.gif";
-			else muteButton.src = "./static/audio.gif";
+			if (mute) muteButton.src = "./assets/images/noAudio.gif";
+			else muteButton.src = "./assets/images/audio.gif";
+		}
 		
-			//mute/unmute whatevers currently playing
-			if(!staticVideo.hidden) staticVideo.muted = !staticVideo.muted;
-			if(!sataTV.hidden) sataTV.muted = !sataTV.muted;
+		//referenced from https://stackoverflow.com/a/26869192
+		function fadeAudio (sound, finalVolume, volumeIncrement) { 		
+			let fadeAudio = setInterval(function () {
+				// Only fade if past the fade out point or not at zero already
+				if ( (sound.volume * volumeIncrement) <= ((finalVolume - volumeIncrement) * volumeIncrement) ) {
+					sound.volume += volumeIncrement;
+				} else{
+					sound.volume = finalVolume;
+					clearInterval(fadeAudio);
+				}
+			}, 200);
+		}
+	
+		//runs on mouseover / touchstart of a category
+		function enterCategory(audio){
+			if (focusedAudio && audio.toString() != focusedAudio.toString()){ //checking if window loaded && if entering a new category
+				//muting 
+				focusedAudio.forEach(element => {
+					fadeAudio(element, 0.0, -0.1)
+				});
+				
+				focusedAudio = audio;//swapping to new audio
+				
+				//unmuting
+				focusedAudio.forEach(element => {
+					//updating mute state
+					if(!mute)element.muted = false;
+					else element.muted = true;
+					
+					//fading in
+					fadeAudio(element, 1.0, 0.1);
+				});
+			} else audio.volume = 1; //failsafe
 		}
 	</script>
+  </head>
+  <body>
 	
-	<div class="category">
+	<div class="category"  onmouseover="enterCategory([document.getElementById('sataBgMusic')])" ontouchstart="enterCategory([document.getElementById('sataBgMusic')])">
 		
-		<img id="satasiteBackground" class="background" src="./static/satasiteBackground.jpg" alt="satasite background">
+		<audio muted autoplay loop id="sataBgMusic">
+			<source src="./assets/audio/SoKawaii-MarioArtistTalentStudio.mp3">
+		</audio>
+		
+		<img id="satasiteBackground" class="background" src="./assets/images/satasiteBackground.jpg" alt="satasite background">
 		
 		<picture>
-		  <source srcset=".\static\satasiteMobile.gif" media="(aspect-ratio <= 1/1)">
-		  <source srcset=".\static\satasite.gif">
-		  <img class="satasiteLogo" src=".\static\satasite.gif" alt="satasite !">
+		  <source srcset=".\assets\images\satasiteMobile.gif" media="(aspect-ratio <= 1/1)">
+		  <source srcset=".\assets\images\satasite.gif">
+		  <img class="satasiteLogo" src=".\assets\satasite.gif" alt="satasite !">
 		</picture> 
 		
 		<div class="links">
-			<a href="https://twitter.com/sataIight"> <img src=".\static\twitter.gif" style="float:left;" width="50%" height="100%" alt="twitter"> </a>
-			<a href="https://tumblr.com/satalight"> <img src=".\static\tumblr.gif" style="float:left;" width="50%" height="100%" alt="tumblr"> </a>
+			<a href="https://twitter.com/sataIight"> <img src=".\assets\images\twitter.gif" style="float:left;" width="50%" height="100%" alt="twitter"> </a>
+			<a href="https://tumblr.com/satalight"> <img src=".\assets\images\tumblr.gif" style="float:left;" width="50%" height="100%" alt="tumblr"> </a>
 		</div>
 		
-		<img src=".\static\down.gif" class="bottomCenter">
+		<img src=".\assets\images\down.gif" class="bottomCenter">
 		
 	</div>
 	
 	
-	<div class="category" id="favorWidthWhenInMobileAspectRatio">
+	<div class="category" id="favorWidthWhenInMobileAspectRatio" onmouseover="enterCategory(sataTvAudioElements)" ontouchstart="enterCategory(sataTvAudioElements)">
 		
 		<div class="container">
-			<img id="videoArchiveBackground" class="background" src="./static/pkmnChannelMinusikachu.png" alt="sataTV background"></img>
+			<img id="videoArchiveBackground" class="background" src="./assets/images/pkmnChannelMinusikachu.png" alt="sataTV background"></img>
 			
 			<video  class = "videoLayer" id= "static" src="https://i.imgur.com/56U9NSZ.mp4" autoplay muted loop> </video>
 			<video  class = "videoLayer" id= "sataTV" src="https://i.imgur.com/KJW3r7J.mp4" hidden muted> </video>
 		</div>
 		
-		<img id="pikachu" src= ".\static\pikachu1.gif"></img>
+		<img id="pikachu" src= ".\assets\images\pikachu1.gif"></img>
 	
-		<img id="notification" src= ".\static\pikachuIsEnthralled.gif"></img>
+		<img id="notification" src= ".\assets\images\pikachuIsEnthralled.gif"></img>
 		
 		<script>
 			//satalight TV
-			let staticVideo = document.getElementById("static");
+			let staticChannel = document.getElementById("static");
 			let sataTV = document.getElementById("sataTV");
+			let pikachu = document.getElementById("pikachu");
+			
+			let sataTvAudioElements = [staticChannel, sataTV]; //shortcut
 			
 			let videoQueue;
 			let playedVideos = [];
 			let currentVideo;
 			
-			let pikachu = document.getElementById("pikachu");
+			//getVideoQueue();
 			
-			getVideoQueue();
-			
-			//pulling video list from imgur api //heavily based on https://medium.com/@microaeris/getting-started-with-the-imgur-api-4e96c352658a
+			//pulling video list from imgur api 
+			//heavily based on https://medium.com/@microaeris/getting-started-with-the-imgur-api-4e96c352658a
 			function getVideoQueue(){
 				let req = new XMLHttpRequest();
 				req.open("GET", "https://api.imgur.com/3/album/8UAp6qX");
@@ -100,26 +151,26 @@
 			sataTV.oncanplay = function() {
 				//..and waiting 2 seconds for static to play 
 				setTimeout(function(){
-					staticVideo.muted = true;
+					staticChannel.volume = 0;
 					
 					//changing from static to video
-					changeChannel(sataTV, staticVideo);
+					changeChannel(sataTV, staticChannel);
 					
 					sataTV.onended = function(){ 
 						//changing from video to static
-						changeChannel(staticVideo,sataTV);
+						changeChannel(staticChannel,sataTV);
 						changeVideo();
 					}
 				}, 2000);
 			}
 			
+			//i called them 'newvideo' and 'oldvideo' but theyre actually channels, fuck you
 			function changeChannel(newVideo, oldVideo){
-				oldVideo.muted = true;
+				//getting rid of old channel
 				oldVideo.hidden = true;
 				
+				//setting up new channel
 				newVideo.play();
-				if (mute) newVideo.muted = true;
-				else newVideo.muted = false;
 				newVideo.hidden = false;
 			}
 			
@@ -149,23 +200,17 @@
 			
 			//change pikachu pose
 			function pikachuChange(index){
-				pikachu.src = "./static/pikachu" + index + ".gif";
+				pikachu.src = "./assets/images/pikachu" + index + ".gif";
 			}
 			
 			//roll for notification gif every loop (3.33 seconds)
 			setInterval(function() {
 				document.getElementById("notification").hidden  = true;
-				if (getRandomInt(30) == 0){
+				if (getRandomInt(30) == 0){ //1 in 30 chance of notification
 					document.getElementById("notification").hidden = false;
 				}
 			}, 3330);
-			
-			//copied this from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-			function getRandomInt(max) { 
-				return Math.floor(Math.random() * max);
-			}
 		</script>
 	</div>
-	
   </body>
 </html>
