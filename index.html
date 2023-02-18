@@ -31,7 +31,7 @@
 			mute = !mute;
 			
 			//muting everything focused
-			focusedAudio.forEach(element => element.muted = mute);
+			focusedAudio.forEach(element => {if(!element.hidden)element.muted = mute});
 			
 			//change icon
 			if (mute) muteButton.src = "./assets/images/noAudio.gif";
@@ -64,7 +64,9 @@
 				//unmuting
 				focusedAudio.forEach(element => {
 					//updating mute state
-					if(!mute)element.muted = false;
+					if(!mute && !element.hidden){
+						element.muted = false;
+					}
 					else element.muted = true;
 					
 					//fading in
@@ -111,13 +113,14 @@
 		
 		<img id="pikachu" src= ".\assets\images\pikachu1.gif"></img>
 	
-		<img id="notification" src= ".\assets\images\pikachuIsEnthralled.gif"></img>
+		<img id="notification" src= ".\assets\images\pikachuIsEnthralled.gif" hidden></img>
 		
 		<script>
 			//satalight TV
 			let staticChannel = document.getElementById("static");
 			let sataTV = document.getElementById("sataTV");
 			let pikachu = document.getElementById("pikachu");
+			let notification = document.getElementById("notification");
 			
 			let sataTvAudioElements = [staticChannel, sataTV]; //shortcut
 			
@@ -137,7 +140,7 @@
 				req.onreadystatechange = function() { 
 					if (req.readyState == 4 && req.status == 200) {
 						videoQueue = JSON.parse(req.responseText).data.images;
-						
+						console.log("got request");
 						//setting up first video to play
 						currentVideo = getRandomInt(videoQueue.length);
 						sataTV.src = "https://i.imgur.com/" + videoQueue[currentVideo].id + ".mp4";
@@ -148,10 +151,9 @@
 			}
 			
 			//play video once done loading..
-			sataTV.oncanplay = function() {
+			sataTV.onloadeddata = function() {
 				//..and waiting 2 seconds for static to play 
 				setTimeout(function(){
-					staticChannel.volume = 0;
 					
 					//changing from static to video
 					changeChannel(sataTV, staticChannel);
@@ -168,6 +170,9 @@
 			function changeChannel(newVideo, oldVideo){
 				//getting rid of old channel
 				oldVideo.hidden = true;
+				
+				newVideo.muted = oldVideo.muted;
+				oldVideo.muted = true;
 				
 				//setting up new channel
 				newVideo.play();
@@ -204,12 +209,14 @@
 			}
 			
 			//roll for notification gif every loop (3.33 seconds)
-			setInterval(function() {
-				document.getElementById("notification").hidden  = true;
-				if (getRandomInt(30) == 0){ //1 in 30 chance of notification
-					document.getElementById("notification").hidden = false;
-				}
-			}, 3330);
+			notification.onload = function(){
+				setInterval(function() {
+					notification.hidden  = true;
+					if (getRandomInt(30) == 0){ //1 in 30 chance of notification
+						notification.hidden = false;
+					}
+				}, 3330);
+			}
 		</script>
 	</div>
   </body>

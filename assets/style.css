@@ -76,7 +76,7 @@ body {
 
 #notification{
 	position: absolute;
-	top: 110%;
+	top: 7%;
 	left: 50%;
 	height:10%;
 	z-index: 2;
