@@ -10,7 +10,7 @@
          This makes it easier to make new pages for your site. -->
     <link href="./assets/style.css" rel="stylesheet" type="text/css" media="all">
 	
-	<img id="muteButton" onclick="muteToggle()" src = ".\assets\images\noAudio.gif"></img>
+	<img id="muteButton" onclick="muteToggle()" src = ".\assets\images\noAudio.gif" hidden></img>
 	<script>
 		//satatools
 		let mute = true;
@@ -19,6 +19,7 @@
 		
 		window.onload = function(){
 			focusedAudio = [document.getElementById('sataBgMusic')];
+			muteButton.hidden=false;
 		}
 		
 		//copied this from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
