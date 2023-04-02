@@ -12,6 +12,15 @@
 	
 	<img id="muteButton" onclick="muteToggle()" src = ".\assets\images\noAudio.gif" hidden></img>
 	<script>
+		//preventing media controls from affecting anything. i am the only person annoyed by this
+		//taken from https://stackoverflow.com/a/60022070
+		navigator.mediaSession.setActionHandler('play', function() { /* Code excerpted. */ });
+		navigator.mediaSession.setActionHandler('pause', function() { /* Code excerpted. */ });
+		navigator.mediaSession.setActionHandler('seekbackward', function() { /* Code excerpted. */ });
+		navigator.mediaSession.setActionHandler('seekforward', function() { /* Code excerpted. */ });
+		navigator.mediaSession.setActionHandler('previoustrack', function() { /* Code excerpted. */ });
+		navigator.mediaSession.setActionHandler('nexttrack', function() { /* Code excerpted. */ });
+		
 		//satatools
 		let mute = true;
 		let muteButton = document.getElementById("muteButton");
@@ -40,7 +49,7 @@
 		}
 		
 		//referenced from https://stackoverflow.com/a/26869192
-		function fadeAudio (sound, finalVolume, volumeIncrement) { 		
+		function fadeAudio (sound, finalVolume, volumeIncrement) {
 			let fadeAudio = setInterval(function () {
 				// Only fade if past the fade out point or not at zero already
 				if ( (sound.volume * volumeIncrement) <= ((finalVolume - volumeIncrement) * volumeIncrement) ) {
@@ -54,7 +63,8 @@
 	
 		//runs on mouseover / touchstart of a category
 		function enterCategory(audio){
-			if (focusedAudio && audio.toString() != focusedAudio.toString()){ //checking if window loaded && if entering a new category
+			if (focusedAudio && !audio[0].isSameNode(focusedAudio[0])){ //checking if window loaded && if entering a new category
+				console.log("changing audio");
 				//muting 
 				focusedAudio.forEach(element => {
 					fadeAudio(element, 0.0, -0.1)
@@ -79,6 +89,7 @@
   </head>
   <body>
 	
+	<!--sataLanding-->
 	<div class="category"  onmouseover="enterCategory([document.getElementById('sataBgMusic')])" ontouchstart="enterCategory([document.getElementById('sataBgMusic')])">
 		
 		<audio muted autoplay loop id="sataBgMusic">
@@ -102,7 +113,21 @@
 		
 	</div>
 	
+	<!--sataSightings-->
+	<div class="category"  onmouseover="enterCategory([document.getElementById('sataSightingMusic')])" ontouchstart="enterCategory([document.getElementById('sataSightingMusic')])">
+		
+		<audio muted autoplay loop id="sataSightingMusic">
+			<source src="./assets/audio/FriendlyConversation-VA-11HALL-A.mp3">
+		</audio>
+		
+		<marquee scrollamount="20" id="sataSightingHeader">SATASIGHTINGS: LIVE FOOTAGE FROM SATALIGHT'S HOME. WHAT IS SATALIGHT DOING? WHERE IS SATALIGHT? ALL WILL BE ANSWERED ON THIS LIVE BROADCAST. 24/7 COVERAGE FOR SATALIGHT TRUCK FREAKS.</marquee>
+		
+		<img id="sataSightingCamera" class="background" src="http://73.253.117.121:1024/mjpg/video.mjpg" alt="camera of satalight's house">
+		
+		<img id="sataSonar" src="./assets/images/sataSonar.gif">
+	</div>
 	
+	<!--sataTV-->
 	<div class="category" id="favorWidthWhenInMobileAspectRatio" onmouseover="enterCategory(sataTvAudioElements)" ontouchstart="enterCategory(sataTvAudioElements)">
 		
 		<div class="container">

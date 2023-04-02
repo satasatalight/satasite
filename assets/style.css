@@ -22,6 +22,15 @@ body {
   height:100%;
 }
 
+/*general*/
+#muteButton {
+	position: fixed;
+	height:20vh;
+	top: 0vw;
+	right:0vw;
+	z-index: 2;
+}
+
 .category {
   position:relative;
   height: 100vh;
@@ -35,6 +44,13 @@ body {
 	height:fit-content;
 }
 
+.background{
+  position:relative;
+  width:100vw;
+  height: auto;
+}
+
+/*satasiteLanding*/
 .satasiteLogo {
   position: absolute;
   height:17vh;
@@ -57,14 +73,34 @@ body {
 	height:10vh;
 }
 
-#muteButton {
-	position: fixed;
-	height:20vh;
-	top: 0vw;
-	right:0vw;
-	z-index: 2;
+/*sataSightings*/
+#sataSightingCamera{
+	top:0vw;
 }
 
+@font-face {
+  font-family: "VCRfont";
+  src: local("VCRfont"), url("./fonts/VCR.ttf"), format("TrueType");
+}
+
+#sataSightingHeader{
+	position:absolute;
+	z-index:1;
+	top:0vh;
+	font-size:6vh;
+	font-family:"VCRfont";
+	background-color: black;
+}
+
+#sataSonar{
+	position: absolute;
+	bottom:2vh;
+	left:2vw;
+	width:auto;
+	height:40vh;
+}
+
+/*sataTV*/
 #pikachu{
 	position: absolute;
 	right: 0%;
@@ -83,15 +119,6 @@ body {
 	
 	transform: translate(-50%, -50%);
 	-webkit-transform: translate(-50%, -50%);
-}
-
-/*Dynamic Classes*/
-
-/*Default*/
-.background{
-  position:relative;
-  width:100vw;
-  height: auto;
 }
 
 #videoArchiveBackground{
@@ -113,10 +140,22 @@ body {
 	left: 19%;
 }
 
+
+/*Dynamic Classes*/
+
 /*satasiteBackground.naturalHeight = 995px
 satasiteBackground.naturalWidth = 1411px*/
 @media (aspect-ratio <= 1411/995) {
 	#satasiteBackground{
+		height:100vh;
+		width:auto;
+	}
+}
+
+/* sataSightingCameraWidth = 704px
+sataSightingCameraHeight = 480px*/
+@media (aspect-ratio <= 704/480){
+	#sataSightingCamera{
 		height:100vh;
 		width:auto;
 	}
@@ -138,6 +177,12 @@ videoArchiveBackground.naturalWidth = 1920px*/
 
 /*Mobile classes*/
 @media (aspect-ratio <= 1/1) {
+  /*general*/
+  #muteButton {
+	height:9%;
+  }
+  
+  /*sataLanding*/
   .links{
 	height: 8vh;
 	top: 35vh;
@@ -165,14 +210,20 @@ videoArchiveBackground.naturalWidth = 1920px*/
 	height:10vh
   }
   
-  #muteButton {
-	height:9%;
-  }
-  
   #satasiteBackground{
 	right: 45vh;
   }
   
+  /*sataSightings*/
+  #sataSightingCamera{
+	right:15vh;  
+  }
+  
+  #sataSonar{
+	height:25vh;
+  }
+  
+  /*sataTV*/
   #notification{
 	height:4%;  
   }
