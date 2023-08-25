@@ -1,5 +1,7 @@
 ### flew too close to the caprisun
-### https://satasatalight.github.io/satasatalight/
+### repo for hosting my home page: https://satasatalight.github.io/satasatalight/
+###
+### This project is tested with BrowserStack.
 
 <!--
 **satasatalight/satasatalight** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.

@@ -8,6 +8,7 @@ html, body {
 
 html {
     display: table;
+	scroll-behavior: smooth;
 }
 
 body {
@@ -22,13 +23,44 @@ body {
   height:100%;
 }
 
+/*links*/
+a:link {
+  color: #0f57ff;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #5324ff;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: yellow;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+/*preventing user selecting on images*/
+img {  
+   user-drag: none;  
+   user-select: none;
+   -moz-user-select: none;
+   -webkit-user-drag: none;
+   -webkit-user-select: none;
+   -ms-user-select: none;
+}
+
 /*general*/
 #muteButton {
 	position: fixed;
 	height:20vh;
 	top: 0vw;
 	right:0vw;
-	z-index: 2;
+	
+	cursor: pointer;
+	z-index: 3;
 }
 
 .category {
@@ -45,25 +77,32 @@ body {
 }
 
 .background{
-  position:relative;
+  position:absolute;
   width:100vw;
   height: auto;
 }
 
+.margins{
+	margin: 1vh 1vw;
+}
+
 /*satasiteLanding*/
-.satasiteLogo {
+#satasiteLogo {
   position: absolute;
   height:17vh;
   top: 40vh;
   left: 5vw;
 }
 
-.bottomCenter{
-  position: absolute;
+#arrow{
+  position: fixed;
   top: 85vh;
-  left: 44vw;
+  left: 42vw;
   width:15vw;
   height:auto;
+  
+  cursor: pointer;
+  z-index:3;
 }
 
 .links {
@@ -74,21 +113,12 @@ body {
 }
 
 /*sataSightings*/
-#sataSightingCamera{
-	top:0vw;
-}
-
-@font-face {
-  font-family: "VCRfont";
-  src: local("VCRfont"), url("./fonts/VCR.ttf"), format("TrueType");
-}
-
 #sataSightingHeader{
 	position:absolute;
 	z-index:1;
 	top:0vh;
-	font-size:6vh;
-	font-family:"VCRfont";
+	font-size:10vh;
+	font-family: 'VT323', monospace;
 	background-color: black;
 }
 
@@ -122,6 +152,7 @@ body {
 }
 
 #videoArchiveBackground{
+	position:relative;
 	z-index: 1;
 }
 
@@ -137,9 +168,57 @@ body {
 	height: calc(47vw * 0.75);
 	width: 47vw;
 	top: calc(20% - 10px);
-	left: 19%;
+	left: 18.5%;
 }
 
+/*sataCredits*/
+#creditsDragbar{
+	height:1vh;
+	width:100vw;
+	
+	cursor: row-resize;
+}
+
+#creditsTitle{
+	position: absolute;
+	height:20vh;
+	top: 5vh;
+	left: 34vw;
+}
+
+#creditsBackground{
+	position:absolute;
+}
+
+.mutuals{
+	height:auto;
+	width:auto;
+}
+
+.creditsBox{
+	position:absolute;
+	top:30vh;
+	height:65vh;
+	width:40vw;
+	
+	border-radius: 25px;
+	
+	text-align: center;
+	font-size: 2vw;
+	
+	overflow: auto;
+	
+	font-family: 'Slackside One', cursive;
+	background-color: rgba(0, 0, 0, 0.8);
+}
+
+#mutualsBox{
+	left:5vw;
+}
+	
+#citationBox{
+	right:5vw;
+}
 
 /*Dynamic Classes*/
 
@@ -174,12 +253,17 @@ videoArchiveBackground.naturalWidth = 1920px*/
 	}
 }
 
-
 /*Mobile classes*/
 @media (aspect-ratio <= 1/1) {
   /*general*/
   #muteButton {
 	height:9%;
+  }
+  
+  #arrow{
+	top:90vh;
+	width:40vw;
+	left: 30vw;
   }
   
   /*sataLanding*/
@@ -198,7 +282,7 @@ videoArchiveBackground.naturalWidth = 1920px*/
 	-webkit-transform: translate(-50%, -50%);
   }
   
-  .satasiteLogo{
+  #satasiteLogo{
 	height: 14vh;
 	top: 20vh;
   }
@@ -211,12 +295,12 @@ videoArchiveBackground.naturalWidth = 1920px*/
   }
   
   #satasiteBackground{
-	right: 45vh;
+	right: -45vh;
   }
   
   /*sataSightings*/
   #sataSightingCamera{
-	right:15vh;  
+	right:-15vh;  
   }
   
   #sataSonar{
@@ -243,7 +327,7 @@ videoArchiveBackground.naturalWidth = 1920px*/
 	left: calc(19% - 10px);
   }
   
-  #favorWidthWhenInMobileAspectRatio{
+  .favorWidthWhenInMobileAspectRatio{
 	height:calc(180vw * 0.538541667);  
   }
   
@@ -251,5 +335,30 @@ videoArchiveBackground.naturalWidth = 1920px*/
 	height: 55%;
 	width: auto;
 	right:-40%;
+  }
+  
+  /*sataCredits*/
+  #creditsTitle{
+	top: 2vh;
+	left: 0vw;
+	height: auto;
+	width: 100vw;
+  }
+  
+  .creditsBox{
+	width: 100vw;
+	height: 33vh;
+	
+	font-size: 4vw;
+  }
+  
+  #mutualsBox{
+	left:0vw;
+	top:21vh;
+  }
+  
+  #citationBox{
+	right:0vw;
+	top:56vh;
   }
 }

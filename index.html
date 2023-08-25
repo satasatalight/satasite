@@ -1,249 +1,399 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>satasite !</title>
-    <link rel="icon" href=".\assets\images\bomberman-icon.png" type="image/x-icon">
-    <!-- The style.css file allows you to change the look of your web pages.
-         If you include the next line in all your web pages, they will all share the same look.
-         This makes it easier to make new pages for your site. -->
-    <link href="./assets/style.css" rel="stylesheet" type="text/css" media="all">
-	
-	<img id="muteButton" onclick="muteToggle()" src = ".\assets\images\noAudio.gif" hidden></img>
-	<script>
-		//preventing media controls from affecting anything. i am the only person annoyed by this
-		//taken from https://stackoverflow.com/a/60022070
-		navigator.mediaSession.setActionHandler('play', function() { /* Code excerpted. */ });
-		navigator.mediaSession.setActionHandler('pause', function() { /* Code excerpted. */ });
-		navigator.mediaSession.setActionHandler('seekbackward', function() { /* Code excerpted. */ });
-		navigator.mediaSession.setActionHandler('seekforward', function() { /* Code excerpted. */ });
-		navigator.mediaSession.setActionHandler('previoustrack', function() { /* Code excerpted. */ });
-		navigator.mediaSession.setActionHandler('nexttrack', function() { /* Code excerpted. */ });
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>satasite !</title>
+		<link rel="icon" href=".\assets\images\bomberman-icon.png" type="image/x-icon">
+		<!-- The style.css file allows you to change the look of your web pages.
+			 If you include the next line in all your web pages, they will all share the same look.
+			 This makes it easier to make new pages for your site. -->
+		<link href="./assets/style.css" rel="stylesheet" type="text/css" media="all">
 		
-		//satatools
-		let mute = true;
-		let muteButton = document.getElementById("muteButton");
-		let focusedAudio;
+		<!-- fonts -->
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Slackside+One&family=VT323&display=swap');
+		</style> 
 		
-		window.onload = function(){
-			focusedAudio = [document.getElementById('sataBgMusic')];
-			muteButton.hidden=false;
-		}
+		<!-- general -->
+		<img title="scroll to next category" src=".\assets\images\down.gif" 
+		onclick="focusedCategory.nextElementSibling ? focusedCategory.nextElementSibling.scrollIntoView({ block: 'end',  behavior: 'smooth' }) : categories[0].scrollIntoView({ block: 'end',  behavior: 'smooth' });"
+		id="arrow" hidden></img>
 		
-		//copied this from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-		function getRandomInt(max) { 
-			return Math.floor(Math.random() * max);
-		}
-		
-		//mute/unmute
-		function muteToggle(){ 
-			mute = !mute;
-			
-			//muting everything focused
-			focusedAudio.forEach(element => {if(!element.hidden)element.muted = mute});
-			
-			//change icon
-			if (mute) muteButton.src = "./assets/images/noAudio.gif";
-			else muteButton.src = "./assets/images/audio.gif";
-		}
-		
-		//referenced from https://stackoverflow.com/a/26869192
-		function fadeAudio (sound, finalVolume, volumeIncrement) {
-			let fadeAudio = setInterval(function () {
-				// Only fade if past the fade out point or not at zero already
-				if ( (sound.volume * volumeIncrement) <= ((finalVolume - volumeIncrement) * volumeIncrement) ) {
-					sound.volume += volumeIncrement;
-				} else{
-					sound.volume = finalVolume;
-					clearInterval(fadeAudio);
-				}
-			}, 200);
-		}
-	
-		//runs on mouseover / touchstart of a category
-		function enterCategory(audio){
-			if (focusedAudio && !audio[0].isSameNode(focusedAudio[0])){ //checking if window loaded && if entering a new category
-				console.log("changing audio");
-				//muting 
-				focusedAudio.forEach(element => {
-					fadeAudio(element, 0.0, -0.1)
-				});
-				
-				focusedAudio = audio;//swapping to new audio
-				
-				//unmuting
-				focusedAudio.forEach(element => {
-					//updating mute state
-					if(!mute && !element.hidden){
-						element.muted = false;
-					}
-					else element.muted = true;
-					
-					//fading in
-					fadeAudio(element, 1.0, 0.1);
-				});
-			} else audio.volume = 1; //failsafe
-		}
-	</script>
-  </head>
-  <body>
-	
-	<!--sataLanding-->
-	<div class="category"  onmouseover="enterCategory([document.getElementById('sataBgMusic')])" ontouchstart="enterCategory([document.getElementById('sataBgMusic')])">
-		
-		<audio muted autoplay loop id="sataBgMusic">
-			<source src="./assets/audio/SoKawaii-MarioArtistTalentStudio.mp3">
-		</audio>
-		
-		<img id="satasiteBackground" class="background" src="./assets/images/satasiteBackground.jpg" alt="satasite background">
-		
-		<picture>
-		  <source srcset=".\assets\images\satasiteMobile.gif" media="(aspect-ratio <= 1/1)">
-		  <source srcset=".\assets\images\satasite.gif">
-		  <img class="satasiteLogo" src=".\assets\satasite.gif" alt="satasite !">
-		</picture> 
-		
-		<div class="links">
-			<a href="https://twitter.com/sataIight"> <img src=".\assets\images\twitter.gif" style="float:left;" width="50%" height="100%" alt="twitter"> </a>
-			<a href="https://tumblr.com/satalight"> <img src=".\assets\images\tumblr.gif" style="float:left;" width="50%" height="100%" alt="tumblr"> </a>
-		</div>
-		
-		<img src=".\assets\images\down.gif" class="bottomCenter">
-		
-	</div>
-	
-	<!--sataSightings-->
-	<div class="category"  onmouseover="enterCategory([document.getElementById('sataSightingMusic')])" ontouchstart="enterCategory([document.getElementById('sataSightingMusic')])">
-		
-		<audio muted autoplay loop id="sataSightingMusic">
-			<source src="./assets/audio/FriendlyConversation-VA-11HALL-A.mp3">
-		</audio>
-		
-		<marquee scrollamount="20" id="sataSightingHeader">SATASIGHTINGS: LIVE FOOTAGE FROM SATALIGHT'S HOME. WHAT IS SATALIGHT DOING? WHERE IS SATALIGHT? ALL WILL BE ANSWERED ON THIS LIVE BROADCAST. 24/7 COVERAGE FOR SATALIGHT TRUCK FREAKS.</marquee>
-		
-		<img id="sataSightingCamera" class="background" src="http://73.253.117.121:1024/mjpg/video.mjpg" alt="camera of satalight's house">
-		
-		<img id="sataSonar" src="./assets/images/sataSonar.gif">
-	</div>
-	
-	<!--sataTV-->
-	<div class="category" id="favorWidthWhenInMobileAspectRatio" onmouseover="enterCategory(sataTvAudioElements)" ontouchstart="enterCategory(sataTvAudioElements)">
-		
-		<div class="container">
-			<img id="videoArchiveBackground" class="background" src="./assets/images/pkmnChannelMinusikachu.png" alt="sataTV background"></img>
-			
-			<video  class = "videoLayer" id= "static" src="https://i.imgur.com/56U9NSZ.mp4" autoplay muted loop> </video>
-			<video  class = "videoLayer" id= "sataTV" src="https://i.imgur.com/KJW3r7J.mp4" hidden muted> </video>
-		</div>
-		
-		<img id="pikachu" src= ".\assets\images\pikachu1.gif"></img>
-	
-		<img id="notification" src= ".\assets\images\pikachuIsEnthralled.gif" hidden></img>
+		<img title="mute?" id="muteButton" onclick="muteToggle()" src = ".\assets\images\noAudio.gif" hidden></img>
 		
 		<script>
-			//satalight TV
-			let staticChannel = document.getElementById("static");
-			let sataTV = document.getElementById("sataTV");
-			let pikachu = document.getElementById("pikachu");
-			let notification = document.getElementById("notification");
+			//preventing media controls from affecting anything. i am the only person annoyed by this
+			//taken from https://stackoverflow.com/a/60022070
+			navigator.mediaSession.setActionHandler('play', function() { /* Code excerpted. */ });
+			navigator.mediaSession.setActionHandler('pause', function() { /* Code excerpted. */ });
+			navigator.mediaSession.setActionHandler('seekbackward', function() { /* Code excerpted. */ });
+			navigator.mediaSession.setActionHandler('seekforward', function() { /* Code excerpted. */ });
+			navigator.mediaSession.setActionHandler('previoustrack', function() { /* Code excerpted. */ });
+			navigator.mediaSession.setActionHandler('nexttrack', function() { /* Code excerpted. */ });
 			
-			let sataTvAudioElements = [staticChannel, sataTV]; //shortcut
+			let mute = true;
+			let muteButton = document.getElementById("muteButton");
+			let arrow = document.getElementById("arrow");
 			
-			let videoQueue;
-			let playedVideos = [];
-			let currentVideo;
+			let focusedCategory;
 			
-			getVideoQueue();
+			//updated later in window.onload
+			let categories;
+			let audio;
 			
-			//pulling video list from imgur api 
-			//heavily based on https://medium.com/@microaeris/getting-started-with-the-imgur-api-4e96c352658a
-			function getVideoQueue(){
-				let req = new XMLHttpRequest();
-				req.open("GET", "https://api.imgur.com/3/album/8UAp6qX");
-				req.setRequestHeader("Authorization", "Client-ID f707b5eca189982");
-				req.send("null");
-				req.onreadystatechange = function() { 
-					if (req.readyState == 4 && req.status == 200) {
-						videoQueue = JSON.parse(req.responseText).data.images;
-						console.log("got request");
-						//setting up first video to play
-						currentVideo = getRandomInt(videoQueue.length);
-						sataTV.src = "https://i.imgur.com/" + videoQueue[currentVideo].id + ".mp4";
-					} else {
-						console.log("Error with Imgur Request.");
-					}
-				}
+			//copied this from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+			function getRandomInt(max) { 
+				return Math.floor(Math.random() * max);
 			}
 			
-			//play video once done loading..
-			sataTV.onloadeddata = function() {
-				//..and waiting 2 seconds for static to play 
-				setTimeout(function(){
+			//mute/unmute
+			function muteToggle(){ 
+				mute = !mute;
+				
+				//toggling all audio
+				audio.forEach(element => 
+					{element.muted = mute});
+				//toggling current sataTV channel mute
+				currentChannel.muted = mute;
+				
+				//change icon
+				if (mute) 
+					muteButton.src = "./assets/images/noAudio.gif";
+				else 
+					muteButton.src = "./assets/images/audio.gif";
+			}
+			
+			//referenced from https://youtu.be/2IbRtjez6ag and https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API#intersection_observer_concepts_and_usage
+			//IntersectionObserver for volume fading on each category
+			let observer = new IntersectionObserver(entries => 
+				{
+					//for each category,
+					entries.forEach(entry =>{
+						let element = entry.target;
+						//round intersectionRatio to nearest tenth
+						let roundedRatio = Math.floor(entry.intersectionRatio * 10) / 10;
+						
+						//set it's audio / video content's volume to equal it's % onscreen (if it has audio / video content).
+						if(element.querySelector("audio")) 
+							element.querySelector("audio").volume = roundedRatio;
+						if(element.querySelectorAll("video")) 
+							element.querySelectorAll("video").forEach(video => {video.volume = roundedRatio});
+						
+						//updating the current focusedCategory for future reference
+						if(roundedRatio >= 0.9)
+							focusedCategory = element;
 					
-					//changing from static to video
-					changeChannel(sataTV, staticChannel);
-					
-					sataTV.onended = function(){ 
-						//changing from video to static
-						changeChannel(staticChannel,sataTV);
-						changeVideo();
-					}
-				}, 2000);
-			}
-			
-			//i called them 'newvideo' and 'oldvideo' but theyre actually channels, fuck you
-			function changeChannel(newVideo, oldVideo){
-				//getting rid of old channel
-				oldVideo.hidden = true;
-				
-				newVideo.muted = oldVideo.muted;
-				oldVideo.muted = true;
-				
-				//setting up new channel
-				newVideo.play();
-				newVideo.hidden = false;
-			}
-			
-			//changing video
-			function changeVideo(){
-				playedVideos.push(videoQueue[currentVideo]); //add played video to played queue
-				videoQueue.splice(currentVideo,1); //delete played video
-				
-				if (videoQueue.length == 0){ //repeat if queue is done
-					videoQueue = playedVideos;
-					playedVideos = [];
+						//satalight's krazy kustom lazyloader
+						if(roundedRatio >= 0.1 && !element.hasAttribute("data-loaded")){
+							element.querySelectorAll(".lazy").forEach(lazyElement =>{
+								lazyElement.src = lazyElement.dataset.src;});
+							element.setAttribute("data-loaded","");
+						}
+					});
+				},				
+				{
+					//update at these set intervals of element being onscreen, gives illusion of volume "fading"
+					threshold: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
 				}
-				
-				currentVideo = getRandomInt(videoQueue.length); //pull new video
-				sataTV.src = "https://i.imgur.com/" + videoQueue[currentVideo].id + ".mp4"; //load new video
-				
-				//pikachu ai
-				let pikachuChoice = getRandomInt(3); 
-				
-				if (pikachuChoice == 0){ //random pikachu pose
-					pikachuChange((getRandomInt(2) + 1).toString());
-				} if (pikachuChoice == 1){ //pikachu turn
-					pikachuChange("3");
-					setTimeout(function(){ pikachuChange((getRandomInt(2) + 1).toString()); }, 2370); //switching back to pose after turn
-				}
-			}
+			);
 			
-			//change pikachu pose
-			function pikachuChange(index){
-				pikachu.src = "./assets/images/pikachu" + index + ".gif";
-			}
-			
-			//roll for notification gif every loop (3.33 seconds)
-			notification.onload = function(){
-				setInterval(function() {
-					notification.hidden  = true;
-					if (getRandomInt(30) == 0){ //1 in 30 chance of notification
-						notification.hidden = false;
-					}
-				}, 3330);
+			window.onload = function(){
+				//document references that need the page to be loaded
+				categories = document.querySelectorAll(".category");
+				audio = document.querySelectorAll("audio");
+				
+				//add all categories into the observer
+				categories.forEach(category => {	
+					observer.observe(category);});
+				
+				//failsafe, make sure the page is actually loaded so the muteButton can mute elements that are loaded
+				muteButton.hidden=false;
+				arrow.hidden = false;
 			}
 		</script>
-	</div>
-  </body>
+	</head>
+	<body>
+		
+		<!-- sataLanding -->
+		<div class="category" id="sataLanding">
+			
+			<audio muted autoplay loop class="lazy" data-src="./assets/audio/SoKawaii-MarioArtistTalentStudio.mp3" id="sataBgMusic"></audio>
+			
+			<img id="satasiteBackground" class="background lazy" data-src="./assets/images/satasiteBackground.jpg" alt="satasite background">
+			
+			<picture>
+			  <source srcset=".\assets\images\satasiteMobile.gif" media="(aspect-ratio <= 1/1)">
+			  <source srcset=".\assets\images\satasite.gif">
+			  <img title="satasite !" id="satasiteLogo" src=".\assets\satasite.gif" alt="satasite !">
+			</picture> 
+			
+			<div class="links">
+				<a title="twitter" href="https://twitter.com/sataIight" target="_blank" rel="noopener noreferrer"> <img src=".\assets\images\twitter.gif" style="float:left;" width="50%" height="100%" alt="twitter"> </a>
+				<a title="tumblr" href="https://tumblr.com/satalight" target="_blank" rel="noopener noreferrer"> <img src=".\assets\images\tumblr.gif" style="float:left;" width="50%" height="100%" alt="tumblr"> </a>
+			</div>
+			
+		</div>
+		
+		<!-- sataSightings -->
+		<div class="category" id="sataSightings">
+			
+			<audio muted autoplay loop class="lazy" data-src="./assets/audio/FriendlyConversation-VA-11HALL-A.mp3" id="sataSightingMusic"></audio>
+			
+			<marquee scrollamount="20" id="sataSightingHeader">SATASIGHTINGS: LIVE FOOTAGE FROM SATALIGHT'S HOME. WHAT IS SATALIGHT DOING? WHERE IS SATALIGHT? ALL WILL BE ANSWERED ON THIS LIVE BROADCAST. 24/7 COVERAGE FOR SATALIGHT TRUCK FREAKS.</marquee>
+			
+			<img id="sataSightingCamera" class="background lazy" data-src="http://73.253.117.121:1024/mjpg/video.mjpg" alt="camera of satalight's house (might not load if camera is busy)" loading="lazy">
+			
+			<img id="sataSonar" class="lazy" data-src="./assets/images/sataSonar.gif" loading="lazy">
+		</div>
+		
+		<!-- sataTV -->
+		<div class="category favorWidthWhenInMobileAspectRatio" id="sataTV" onwheel="onScrollDown(event)" ontouchstart="dragging = true;" ontouchmove="onDragging(event.touches[0].clientY)" ontouchend="dragging = false;">
+			
+			<div class="container">
+				<video  class = "videoLayer lazy" id= "static" data-src="https://i.imgur.com/56U9NSZ.mp4" autoplay muted loop playsinline> </video>
+				<video  class = "videoLayer lazy" id= "sataTvChannel" data-src="https://i.imgur.com/KJW3r7J.mp4" hidden muted playsinline> </video>
+				
+				<img id="videoArchiveBackground" class="background lazy" data-src="./assets/images/pkmnChannelMinusikachu.png" alt="sataTV background" loading="lazy"></img>		
+			</div>
+			
+			<img id="pikachu" class="lazy" data-src=".\assets\images\pikachu1.gif" loading="lazy"></img>
+		
+			<img id="notification" class="lazy" data-src= ".\assets\images\pikachuIsEnthralled.gif" loading="lazy" hidden></img>
+			
+			<script>
+				//satalight TV
+				let staticChannel = document.getElementById("static");
+				let sataTV = document.getElementById("sataTvChannel");
+				let pikachu = document.getElementById("pikachu");
+				let notification = document.getElementById("notification");
+				
+				let videoQueue;
+				let playedVideos = [];
+				let currentVideo;
+				let currentChannel = staticChannel; //shortcut for muting
+				
+				getVideoQueue();
+				
+				//pulling video list from imgur api 
+				//heavily based on https://medium.com/@microaeris/getting-started-with-the-imgur-api-4e96c352658a
+				function getVideoQueue(){
+					let req = new XMLHttpRequest();
+					req.open("GET", "https://api.imgur.com/3/album/8UAp6qX");
+					req.setRequestHeader("Authorization", "Client-ID f707b5eca189982");
+					req.send("null");
+					req.onreadystatechange = function() { 
+						if (req.readyState == 4 && req.status == 200) {
+							videoQueue = JSON.parse(req.responseText).data.images;
+							console.log("got request");
+							//setting up first video to play
+							currentVideo = getRandomInt(videoQueue.length);
+							sataTV.src = "https://i.imgur.com/" + videoQueue[currentVideo].id + ".mp4";
+						} else {
+							console.log("Error with Imgur Request.");
+						}
+					}
+				}
+				
+				//play video once done loading..
+				sataTV.onloadeddata = function() {
+					//..and waiting 2 seconds for static to play 
+					setTimeout(function(){
+						
+						//changing from static to video
+						changeChannel(staticChannel, sataTV);
+						
+						sataTV.onended = function(){ 
+							//changing from video to static
+							changeChannel(sataTV,staticChannel);
+							changeVideo();
+						}
+					}, 2000);
+				}
+				
+				function changeChannel(oldChannel, newChannel){
+					//getting rid of old channel
+					oldChannel.hidden = true;
+					
+					newChannel.muted = oldChannel.muted;
+					oldChannel.muted = true;
+					
+					//easy reference for muting
+					currentChannel = newChannel;
+					
+					//setting up new channel
+					newChannel.play();
+					newChannel.hidden = false;
+				}
+				
+				//changing video
+				function changeVideo(){
+					playedVideos.push(videoQueue[currentVideo]); //add played video to played queue
+					videoQueue.splice(currentVideo,1); //delete played video
+					
+					if (videoQueue.length == 0){ //repeat if queue is done
+						videoQueue = playedVideos;
+						playedVideos = [];
+					}
+					
+					currentVideo = getRandomInt(videoQueue.length); //pull new video
+					sataTV.src = "https://i.imgur.com/" + videoQueue[currentVideo].id + ".mp4"; //load new video
+					
+					//pikachu ai
+					let pikachuChoice = getRandomInt(3); 
+					
+					if (pikachuChoice == 0){ //random pikachu pose
+						pikachuChange((getRandomInt(2) + 1).toString());
+					} if (pikachuChoice == 1){ //pikachu turn
+						pikachuChange("3");
+						setTimeout(function(){ pikachuChange((getRandomInt(2) + 1).toString()); }, 2370); //switching back to pose after turn
+					}
+				}
+				
+				//change pikachu pose
+				function pikachuChange(index){
+					pikachu.src = "./assets/images/pikachu" + index + ".gif";
+				}
+				
+				//roll for notification gif every loop (3.33 seconds)
+				notification.onload = function(){
+					setInterval(function() {
+						notification.hidden  = true;
+						if (getRandomInt(30) == 0){ //1 in 30 chance of notification
+							notification.hidden = false;
+						}
+					}, 3333);
+				}
+			</script>
+		</div>
+		
+		<!-- sataCredits -->
+		<div class="category" id="sataCredits" style="height:0vh;" onwheel="onScrollDown(event)" ontouchmove="onDragging(event.touches[0].clientY)" ontouchstart="dragging = true;" ontouchend="dragging = false;">
+			<img id="creditsBackground" class="background lazy" data-src="./assets/images/karekano.gif" alt="sataCredits background" loading="lazy" style="height:0vh;">
+			<audio muted class="lazy" data-src="./assets/audio/smwScroll.mp3" id="sataCreditsAudio"></audio>
+			
+			<div id="hiddenUntilFullyExpanded" hidden>
+				<img id="creditsTitle" title="credits" class="lazy" data-src="./assets/images/credits.gif" alt="credits" loading="lazy">
+				
+				<div class="creditsBox" id="mutualsBox">
+					<div class="margins">
+						<b><u>mutuals !</u></b><br>
+						<a title="https://zeoz.one/" href="https://zeoz.one/" target="_blank" rel="noopener noreferrer"><img class="mutuals lazy" data-src="https://files.catbox.moe/mfu55l.gif"></a>
+					</div>
+				</div>
+				
+				<div class="creditsBox" id="citationBox">
+					<div class="margins">
+						<b><u>credits !</u></b><br>
+						<br>
+						<u>sataLanding page:</u><br>
+						background art - <a title="https://www.pixiv.net/en/artworks/95994666" href="https://www.pixiv.net/en/artworks/95994666" target="_blank" rel="noopener noreferrer">by pafica</a><br>
+						music - <a title="https://youtu.be/mEVZqmgIsvo" href="https://youtu.be/mEVZqmgIsvo" target="_blank" rel="noopener noreferrer">So Kawaii!! - Mario Artist Talent Studio by Nintendo</a><br>
+						<br>
+						<u>sataSightings page:</u><br>
+						font - <a title="https://fonts.google.com/specimen/VT323" href="https://fonts.google.com/specimen/VT323" target="_blank" rel="noopener noreferrer">"VT323" by Peter Hull</a><br>
+						camera - <a title="http://www.minerich.com/Birds%20of%20New%20England.htm" href="http://www.minerich.com/Birds%20of%20New%20England.htm" target="_blank" rel="noopener noreferrer">hosted by minerch.com</a><br>
+						<br>
+						<u>sataTV page:</u><br>
+						TV and pikachu ripped from - <a title="https://en.wikipedia.org/wiki/Pok%C3%A9mon_Channel" href="https://en.wikipedia.org/wiki/Pok%C3%A9mon_Channel" target="_blank" rel="noopener noreferrer">Pokemon Channel (GameCube) by Ambrella / Nintendo / The Pokémon Company</a><br>
+						all channels hosted from - <a title="https://imgur.com/a/8UAp6qX" href="https://imgur.com/a/8UAp6qX" target="_blank" rel="noopener noreferrer">Imgur.com</a><br>
+						videos edited using - <a title="https://www.blackmagicdesign.com/products/davinciresolve" href="https://www.blackmagicdesign.com/products/davinciresolve" target="_blank" rel="noopener noreferrer">Davinci Resolve</a><br>
+						(full credits for each video channel included in imgur link)<br>
+						<br>
+						<u>sataCredits page:</u><br>
+						credits font - <a title="https://fonts.google.com/specimen/Slackside+One" href="https://fonts.google.com/specimen/Slackside+One" target="_blank" rel="noopener noreferrer">Slackside One by Maniackers Design</a><br>
+						background gif - <a title="https://youtu.be/_WC1ZVOsKhY?t=1030" href="https://youtu.be/_WC1ZVOsKhY?t=1030" target="_blank" rel="noopener noreferrer">from kare kano, by GAINAX</a><br>
+						<br>
+						<u>misc:</u><br>
+						shake text - <a title="https://studionokoi.itch.io/shake-art-deluxe" href="https://studionokoi.itch.io/shake-art-deluxe" target="_blank" rel="noopener noreferrer">made using shake art, by nokoi</a><br>
+						site hosted by - <a title="https://github.com/satasatalight/satasatalight" href="https://github.com/satasatalight/satasatalight" target="_blank" rel="noopener noreferrer">github.com</a><br>
+						site written with - <a title="https://notepad-plus-plus.org/"href="https://notepad-plus-plus.org/" target="_blank" rel="noopener noreferrer">Notepad++</a><br>
+						<br>
+						(any javascript snippets referenced from other sources credited in source comments)<br>
+						<br>
+						everythign else by sata light (:
+					</div>
+				</div>
+			</div>
+			
+			<script>
+				let sataTvDiv = document.getElementById("sataTV");
+				let creditsDiv = document.getElementById("sataCredits");
+				let creditsBackground = document.getElementById("creditsBackground");
+				let creditsAudio = document.getElementById("sataCreditsAudio");
+				let hiddenCredits = document.getElementById("hiddenUntilFullyExpanded");
+				
+				let lastPointerPosition;
+				let dragging = false;
+				
+				let creditsDivHeight = 0;
+				
+				//check if dragging dragbar
+				function onDragging(pointerPosition){
+					if(dragging){
+						//if pointer moves higher than from where it started and is at bottom of page, its dragging upwards and should expand the creditsDiv
+						if(pointerPosition < lastPointerPosition && (window.innerHeight + window.scrollY) >= document.body.scrollHeight - 2)
+							//converting pixel positions into % of screen and expanding div
+							expandDiv(((lastPointerPosition - pointerPosition) / window.innerHeight) * 100);
+						
+						//record where the pointer starts dragging from
+						lastPointerPosition = pointerPosition;
+					}else
+						//reset last starting position
+						lastPointerPosition = null;
+				}
+				
+				function onScrollDown(event){
+					//check if scrolling down and at bottom of page
+					if(event.deltaY > 0 && (window.innerHeight + window.scrollY) >= document.body.scrollHeight - 2)
+						//increasing height
+						expandDiv(20);
+				}
+				
+				//expanding div by entered amount
+				function expandDiv(heightIncrease){
+					//checking if already fully expanded
+					if(creditsDivHeight <= 90){
+						//increasing height
+						creditsDivHeight += heightIncrease;
+						
+						//updating height
+						creditsDiv.style.height = creditsDivHeight.toString() + "vh";
+						creditsBackground.style.height = creditsDivHeight.toString() + "vh";
+						
+						//playing smw sound effect
+						creditsAudio.play();
+						//resetting smw sound effect if already playing
+						creditsAudio.currentTime = 0;
+						
+					} else{//once div is fully expanded,
+					
+						//unhide the stuff,
+						hiddenCredits.hidden = false;
+						
+						//bring to full height,
+						creditsDiv.style.height = "100vh";
+						creditsBackground.style.height = "100vh";
+						
+						//change audio,
+						creditsAudio.src = "./assets/audio/staffCredits-LuigisMansion.mp3"
+						creditsAudio.setAttribute("loop", "");
+						creditsAudio.play();
+						
+						//preventing any more updates to the div height,
+						["onwheel", "ontouchstart", "ontouchmove", "ontouchend"].forEach(attribute => {
+							sataTvDiv.removeAttribute(attribute);
+							creditsDiv.removeAttribute(attribute);
+						});
+						
+						//bring to bottom of page,
+						creditsDiv.scrollIntoView({ block: 'end',  behavior: 'smooth' });
+					}
+				}
+			</script>
+			
+		</div>
+		
+	</body>
 </html>
