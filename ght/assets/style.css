@@ -110,6 +110,13 @@ img {
 	top: 56vh;
 	left:5vw;
 	height:10vh;
+	float: left;
+}
+
+.linkButton{
+	float: left;
+	/* width: 10%;
+	height: 10%; */
 }
 
 /*sataSightings*/
@@ -192,7 +199,7 @@ img {
 
 .mutuals{
 	height:auto;
-	width:auto;
+	width:10vw;
 }
 
 .creditsBox{

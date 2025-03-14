@@ -130,13 +130,14 @@
 			</picture> 
 			
 			<div class="links">
-				<a title="twitter" href="https://twitter.com/sataIight" target="_blank" rel="noopener noreferrer"> <img src=".\assets\images\twitter.gif" style="float:left;" width="50%" height="100%" alt="twitter"> </a>
-				<a title="tumblr" href="https://tumblr.com/satalight" target="_blank" rel="noopener noreferrer"> <img src=".\assets\images\tumblr.gif" style="float:left;" width="50%" height="100%" alt="tumblr"> </a>
+				<a class="linkButton" title="twitter" href="https://twitter.com/sataIight" target="_blank" rel="noopener noreferrer"> <img src=".\assets\images\twitter.gif" width="85vw" height="85vh" alt="twitter"> </a>
+				<a class="linkButton" title="tumblr" href="https://tumblr.com/satalight" target="_blank" rel="noopener noreferrer"> <img src=".\assets\images\tumblr.gif" width="85vw" height="85vh" alt="tumblr"> </a>
+				<a class="linkButton" title="bluesky" href="https://satalight.bsky.social" target="_blank" rel="noopener noreferrer"> <img src=".\assets\images\bsky.gif" width="85vw" height="85vh" alt="bluesky"> </a>
 			</div>
 			
 		</div>
 		
-		<!-- sataSightings -->
+		<!-- sataSightings
 		<div class="category" id="sataSightings">
 			
 			<audio muted autoplay loop class="lazy" data-src="./assets/audio/FriendlyConversation-VA-11HALL-A.mp3" id="sataSightingMusic"></audio>
@@ -146,7 +147,7 @@
 			<img id="sataSightingCamera" class="background lazy" data-src="http://73.253.117.121:1024/mjpg/video.mjpg" alt="camera of satalight's house (might not load if camera is busy)" loading="lazy">
 			
 			<img id="sataSonar" class="lazy" data-src="./assets/images/sataSonar.gif" loading="lazy">
-		</div>
+		</div> -->
 		
 		<!-- sataTV -->
 		<div class="category favorWidthWhenInMobileAspectRatio" id="sataTV" onwheel="onScrollDown(event)" ontouchstart="dragging = true;" ontouchmove="onDragging(event.touches[0].clientY)" ontouchend="dragging = false;">
@@ -279,7 +280,8 @@
 				<div class="creditsBox" id="mutualsBox">
 					<div class="margins">
 						<b><u>mutuals !</u></b><br>
-						<a title="https://zeoz.one/" href="https://zeoz.one/" target="_blank" rel="noopener noreferrer"><img class="mutuals lazy" data-src="https://files.catbox.moe/mfu55l.gif"></a>
+						<a title="zeozone" href="https://zeoz.one/" target="_blank" rel="noopener noreferrer"><img class="mutuals lazy" data-src="https://files.catbox.moe/mfu55l.gif"></a> <br>
+						<a title="avery" href="https://twitter.com/yuriboobslover" target="_blank" rel="noopener noreferrer"> <img class="mutuals lazy" data-src="./assets/images/mutuals/avery.gif"></a>
 					</div>
 				</div>
 				
@@ -329,7 +331,7 @@
 				
 				let creditsDivHeight = 0;
 				
-				//check if dragging dragbar
+				//check if dragging dragbar (for mobile)
 				function onDragging(pointerPosition){
 					if(dragging){
 						//if pointer moves higher than from where it started and is at bottom of page, its dragging upwards and should expand the creditsDiv
@@ -344,6 +346,7 @@
 						lastPointerPosition = null;
 				}
 				
+				//(for desktop)
 				function onScrollDown(event){
 					//check if scrolling down and at bottom of page
 					if(event.deltaY > 0 && (window.innerHeight + window.scrollY) >= document.body.scrollHeight - 2)
