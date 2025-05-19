@@ -1,1 +1,1 @@
-### repo for hosting my home page: sata.li/ght
+### repo for hosting the [satasite](https://sata.li/ght) 
