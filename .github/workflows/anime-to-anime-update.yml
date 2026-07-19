@@ -1,4 +1,4 @@
-name: Pull and build Trendle on push
+name: Pull and build Anime to Anime on push
 
 env:
   NAME: animetoanime
@@ -21,7 +21,7 @@ jobs:
       - name: Checkout Source Repo
         uses: actions/checkout@v7
         with:
-          repository: $SOURCE_REPO
+          repository: ${SOURCE_REPO}
           path: ./source
 
       - name: Setup Node
@@ -47,10 +47,10 @@ jobs:
       - name: Commit
         run: |
           cd ../current
-          git config user.name "$USERNAME"
-          git config user.email "$USERNAME@$ADDRESS_SUFFIX"
+          git config user.name "${USERNAME}"
+          git config user.email "${USERNAME}@$ADDRESS_SUFFIX"
           git add .
-          git commit -m "Pulled and built from $SOURCE_REPO"
+          git commit -m "Pulled and built from ${SOURCE_REPO}"
 
       - name: Push
         run: |
