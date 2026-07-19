@@ -1,0 +1,57 @@
+name: Pull and build Trendle on push
+
+env:
+  NAME: animetoanime
+  SOURCE_REPO: satasatalight/animetoanime-frontend
+  USERNAME: ${{ github.actor }}
+  ADDRESS_SUFFIX: users.noreply.github.com 
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  pull-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Current Repo
+        uses: actions/checkout@v7
+        with:
+          path: ./current
+
+      - name: Checkout Source Repo
+        uses: actions/checkout@v7
+        with:
+          repository: $SOURCE_REPO
+          path: ./source
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: |
+          cd ./source
+          npm ci
+
+      - name: Build project
+        run: npm run build
+      
+      - name: Delete old build
+        run: rm -rf ../current/${NAME}
+      
+      - name: Move new build
+        run: mv ./dist ../current/${NAME}/
+          
+      - name: Commit
+        run: |
+          cd ../current
+          git config user.name "$USERNAME"
+          git config user.email "$USERNAME@$ADDRESS_SUFFIX"
+          git add .
+          git commit -m "Pulled and built from $SOURCE_REPO"
+
+      - name: Push
+        run: |
+          git push
