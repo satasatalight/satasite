@@ -21,7 +21,7 @@ jobs:
       - name: Checkout Source Repo
         uses: actions/checkout@v7
         with:
-          repository: $SOURCE_REPO
+          repository: ${{ env.SOURCE_REPO }}
           path: ./source
 
       - name: Setup Node

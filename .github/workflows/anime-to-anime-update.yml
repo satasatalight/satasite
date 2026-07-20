@@ -21,7 +21,7 @@ jobs:
       - name: Checkout Source Repo
         uses: actions/checkout@v7
         with:
-          repository: ${SOURCE_REPO}
+          repository: ${{ env.SOURCE_REPO }}
           path: ./source
 
       - name: Setup Node
@@ -39,10 +39,10 @@ jobs:
         run: npm run build
       
       - name: Delete old build
-        run: rm -rf ../current/${NAME}
+        run: rm -rf ../current/$NAME
       
       - name: Move new build
-        run: mv ./dist ../current/${NAME}/
+        run: mv ./dist ../current/$NAME
           
       - name: Commit
         run: |
