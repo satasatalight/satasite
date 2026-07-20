@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  pull-file:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Current Repo
@@ -23,6 +23,9 @@ jobs:
         with:
           repository: ${{ env.SOURCE_REPO }}
           path: ./source
+      
+      - name: Enter source directory
+        run: cd ./source
 
       - name: Setup Node
         uses: actions/setup-node@v7
