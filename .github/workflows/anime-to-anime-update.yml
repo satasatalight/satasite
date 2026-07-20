@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  pull-repos:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Current Repo
@@ -24,42 +24,34 @@ jobs:
           repository: ${{ env.SOURCE_REPO }}
           path: ./source
 
-  build-source:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: 'source'
-    steps:
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
-          # cache-dependency-path: '**/package-lock.json'
+          cache-dependency-path: '**/package-lock.json'
 
       - name: Install dependencies
         run: npm ci
+        working-directory: 'source'
 
       - name: Build project
         run: npm run build
+        working-directory: 'source'
       
-  move-and-push:
-    runs-on: ubuntu-latest
-    steps:
       - name: Delete old build
-        run: rm -rf ../current/${NAME}
+        run: rm -rf ./current/$NAME
       
       - name: Move new build
-        run: mv ./dist ../current/${NAME}/
+        run: mv ./source/dist ./current/$NAME
           
       - name: Commit
         run: |
-          cd ../current
           git config user.name "$USERNAME"
           git config user.email "$USERNAME@$ADDRESS_SUFFIX"
           git add .
           git commit -m "Pulled and built from $SOURCE_REPO"
+        working-directory: 'current'
 
       - name: Push
-        run: |
-          git push
+        run: git push
