@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-push:
+  pull-repos:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Current Repo
@@ -23,24 +23,29 @@ jobs:
         with:
           repository: ${{ env.SOURCE_REPO }}
           path: ./source
-      
-      - name: Enter source directory
-        run: cd ./source
 
+  build-source:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'source'
+    steps:
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
+          cache-dependency-path: '**/package-lock.json'
 
       - name: Install dependencies
-        run: |
-          cd ./source
-          npm ci
+        run: npm ci
 
       - name: Build project
         run: npm run build
       
+  move-and-push:
+    runs-on: ubuntu-latest
+    steps:
       - name: Delete old build
         run: rm -rf ../current/${NAME}
       
